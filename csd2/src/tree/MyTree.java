@@ -9,6 +9,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
@@ -76,80 +77,44 @@ public class MyTree {
 //     1. void insert(String xName, int xAge) - check if the first letter of xName is 'B'
 //(i.e. xName.charAt(0) == 'B') then do nothing, otherwise insert new person
 //with name=xName, age=xAge to the tree.
-void insert(String name, int age) {
-        if (name.charAt(0) == 'B') {
+
+    void insert(String xName, int xAge) {
+        if (xName.charAt(0) == 'B') {
             return;
-        } else {
-            Node f = root;
-            Node p = new Node(name, age);
-            Node parent = null;  // root khong co cha
-            if (isEmpty()) {
-                root = p;
-                return;
-            }
-            while (f != null) {
-                if (f.info.getName().compareTo(name) == 0) {
-                    return;
-                }
-                parent = f;           // parent di chuyen truoc p va luu tru cac Node
-                if (f.info.getName().compareTo(name) < 0) {
-                    f = f.left;
-                }
-                if (f.info.getName().compareTo(name) > 0) {
-                    f = f.right;
-                }
-            }
-            // p = null, la vi tri chen x vao cay 
-            // x la con cua parent 
-            // xac dinh x la con trai hay con phai cua parent 
-            if (parent.info.getName().compareTo(name) < 0) {
-                parent.left = p;
-            }
-            if (parent.info.getName().compareTo(name) > 0) {
-                parent.right = p;
-            }
+        }
+        Node x = new Node(xName, xAge);
+        if (isEmpty()) {
+            root = x;
+            return;
         }
 
+        Node f, p;
+        f = null;
+        p = root;
+        int check;
+        while (p != null) {
+            check = checkName(p.info.getName(), xName);
+            if (check == 0) {
+                System.out.print("The key" + x.info + " already exists!");
+                return;
+            }
+            f = p;
+            if (check > 0) {
+                p = p.left;
+            }
+            if (check < 0) {
+                p = p.right;
+            }
+        }
+        check = checkName(f.info.getName(), xName);
+        if (check > 0) {
+            f.left = x;
+
+        }
+        if (check < 0) {
+            f.right = x;
+        }
     }
-//    void insert(String xName, int xAge) {
-//        if (xName.charAt(0) == 'B') {
-//            return;
-//        }
-//        Node x = new Node(xName, xAge);
-//        if (isEmpty()) {
-//            root = x;
-//            return;
-//        }
-//
-//        Node f, p;
-//        f = null;
-//        p = root;
-//        int check;
-//        while (p != null) {
-//            check = checkName(p.info.getName(), xName);
-//            if (check == 0) {
-//                System.out.print("The key" + x.info + " already exists!");
-//                return;
-//            }
-//            f = p;
-//            if (check < 0) {
-//                p = p.left;
-//            }
-//            if (check > 0) {
-//                p = p.right;
-//            }
-//        }
-//        check = checkName(f.info.getName(), xName);
-//        if (check < 0) {
-//            f.left = x;
-//
-//        }
-//        if (check > 0) {
-//            f.right = x;
-//        }
-//    }
-    
-    
 //  2. Save all elements having age < the average age of the tree in format (name,
 //age) to the file “q2.txt” by post-order traverse
 
@@ -191,8 +156,9 @@ void insert(String name, int age) {
             bufferedWriter.close();
         }
     }
+
     //3. Calculate the height of the tree.
-   int height(Node p) {
+    int height(Node p) {
         if (p == null) {
             return 0;
         }
@@ -200,12 +166,14 @@ void insert(String name, int age) {
         int r = height(p.right) + 1;
         return (l > r) ? l : r;
     }
-        int height() {
+
+    int height() {
         Node p = root;
         return height(p);
     }
+
     //4. Calculate the number of nodes of the tree. 
-       int count(Node p) {
+    int count(Node p) {
         if (p == null) {
             return (0);
         }
@@ -215,17 +183,19 @@ void insert(String name, int age) {
         r = k + h + 1;
         return (r);
     }
-       int count() {
+
+    int count() {
         Node p = root;
         return count(p);
     }
 //5. Delete the root of the tree by copying.
-       void deleteByCopy() {
+
+    void deleteByCopy() {
         Node f, p;
         f = null;
         p = root;
         // p has left son only
-        
+
         if (p.left != null && p.right == null) {
             if (f == null) { // p = root;
                 root = p.left;
@@ -273,23 +243,24 @@ void insert(String name, int age) {
             }
         }
     }
-       //6. Perform breadth-first traverse from the root and delete 
+    //6. Perform breadth-first traverse from the root and delete 
 //       by copying the second node having age >= the average age.
-        void breath() {
-            Node p=root;
+
+    void breath() {
+        Node p = root;
         if (p == null) {
             return;
         }
         MyQueue q = new MyQueue();
         q.enqueue(p);
-        Node f=null;
-        int count =0;
+        Node f = null;
+        int count = 0;
         while (!q.isEmpty()) {
             f = q.dequeue();
-            if(f.info.getAge()>=avg()){
+            if (f.info.getAge() >= avg()) {
                 count++;
             }
-            if(count==2){
+            if (count == 2) {
                 break;
             }
 //            visit(r); //print
@@ -300,9 +271,9 @@ void insert(String name, int age) {
                 q.enqueue(f.right);
             }
         }
-            deleteByCopy(f);
-    }     
-        
+        deleteByCopy(f);
+    }
+
     void deleteByCopy(Node x) {
         Node f, p;
         f = null;
@@ -313,16 +284,17 @@ void insert(String name, int age) {
             }
             f = p;
             int check = checkName(x.info.getName(), p.info.getName());
-            if (check >0) {
+            if (check > 0) {
                 p = p.left;
-            } if(check <0) {
+            }
+            if (check < 0) {
                 p = p.right;
             }
         }
         if (p == null) {
             return;
         }
-        
+
         // p is a leaf-node;
         if (p.left == null && p.right == null) {
             if (f == null) { // p = root;
@@ -385,5 +357,209 @@ void insert(String name, int age) {
         }
 
     }
-    //
+    //7  Check if the root having non-empty left-son then rotate it to right about its
+//           left-son.
+
+//    public void rotateRight() {
+//        Node gr = root;
+//
+//        if (gr.left == null) {
+//            return;
+//        }
+//        Node par = gr.left;
+//        Node ch = par.left;
+//        if (ch == null) {
+//            return;
+//        }
+//        par.left = ch.right;
+//        ch.right = par;
+//        gr.left = ch;
+//    }
+    Node search(Node node) {
+        if (isEmpty()) {
+
+            return null;
+        }
+        Node p = root;
+        Node parent = null;//rooot khong co cha
+        while (p != null) {
+            if (p.info.name.equals(node.info.name)) {
+                System.out.println("Exist");
+                return parent;
+            }
+            parent = p;
+            if (p.info.name.compareToIgnoreCase(node.info.name) > 0) {
+                p = p.left;
+            } else {
+                p = p.right;
+            }
+            //p = null la vi tri chen x vao cay 
+            //x la con cua parent
+            //can xac dinh x la con trai hay con phai cua parent
+        }
+        System.out.println("Not found: ");
+        return null;
+    }
+
+    void rotateRight(Node node) {
+        if (node == null) {
+            return;
+        }
+        Node gr = search(node);
+        if (gr == null) {
+            if (root.left == null) {
+                return;
+            }
+            Node p = root;
+            Node ch = p.left;
+            p.left = ch.right;
+            ch.right = p;
+            root = ch;
+
+            return;
+        }
+        if (gr.left == node) {
+            Node ch = node.left;
+            
+            node.left = ch.right;
+            ch.right = node;
+            gr.left = ch;
+            return;
+
+        } else {
+            Node ch = node.left;
+            node.left = ch.right;
+            ch.right = node;
+            gr.right = ch;
+            return;
+
+        }
+
+    }
+
+    void breadth2(Node p) {
+        if (p == null) {
+            return;
+        }
+        MyQueue m = new MyQueue();
+        m.enqueue(p);
+        while (!m.isEmpty()) {
+            Node q = (Node) m.dequeue();
+            visit(q);
+            if (q.left != null) {
+                m.enqueue(q.left);
+            }
+            if (q.right != null) {
+                m.enqueue(q.right);
+            }
+        }
+    }
+
+    void rotateLeft(Node node) {
+        if (node == null) {
+            return;
+        }
+        Node gr = search(node);
+        if (gr == null) {
+            if (root.right == null) {
+                return;
+            }
+            Node p = root;
+            Node ch = p.right;
+            if(ch==null){
+                return;
+            }
+            p.left = ch.left;
+            ch.left = p;
+            root = ch;
+
+            return;
+        }
+        if (gr.left == node) {
+            Node ch = node.right;
+            node.right = ch.left;
+            ch.left = node;
+            gr.left = ch;
+            return;
+
+        } else {
+            Node ch = node.right;
+            node.right = ch.left;
+            ch.left = node;
+            gr.right = ch;
+            return;
+
+        }
+    }
+    //8 Perform pre-order traverse from the root, rotate the third node having nonempty 
+//   right-son then rotate it to left about its right-son and display the tree
+//to the output screen.
+    ArrayList<Node> listNode = new ArrayList();
+
+    void Rotate3(Node node) {
+        if (node == null) {
+            return;
+        }
+        if (node.right != null) {
+            listNode.add(node);
+        }
+        Rotate3(node.left);
+        // right recursion
+        Rotate3(node.right);
+        // prints the n-th node of preorder traversal
+    }
+
+    void printListNode() {
+        for (Node node : listNode) {
+            System.out.println(node.info);
+        }
+    }
+
+    public Node Node3thHaveRightSon() {
+        System.out.println(listNode.get(2).info);
+        return listNode.get(2);
+    }
+
+    //9. Calculate balance factor of all nodes. Display all node with balance factor by breadth-first traverse
+    public boolean isAVL(Node node) {
+        int lh;
+        /* for height of left subtree */
+        int rh;
+        /* for height of right subtree */
+
+        if (node == null) {
+            return true;
+        }
+
+        lh = height(node.left);
+        rh = height(node.right);
+
+        if (Math.abs(lh - rh) <= 1 && isAVL(node.left)
+                && isAVL(node.right)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    void breadthcau9(Node p) {
+        if (p == null) {
+            return;
+        }
+        MyQueue m = new MyQueue();
+        m.enqueue(p);
+        while (!m.isEmpty()) {
+            Node q = (Node) m.dequeue();
+            if (isAVL(q) == true) {
+                visit(q);
+            }
+            if (q.left != null) {
+                m.enqueue(q.left);
+            }
+            if (q.right != null) {
+                m.enqueue(q.right);
+            }
+        }
+    }
+
 }

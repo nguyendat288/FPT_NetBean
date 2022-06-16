@@ -14,37 +14,46 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        MyTree t = new MyTree();
-        //        t.insert("D", 9);
-        t.insert("H", 7);
-        t.insert("F", 10);
-        t.insert("E", 8);
-        t.insert("A", 7);
-//        myTree.insert("An", 10);
-//        myTree.insert("Bn", 12);
-//        myTree.insert("Cn1", 15);
-//        myTree.insert("Cn2", 16);
-//        myTree.insert("Cn2", 14);
-//        myTree.insert("Cn3", 18);
-//        myTree.insert("Cn4", 16);
-//        myTree.insert("Dn", 13);
-//        myTree.insert("En", 17);
-        System.out.println("Trasever : ");
-        t.preOrder();
+        MyTree myTree = new MyTree();
+        myTree.insert("Dn", 10);
+        myTree.insert("Bn", 12);
+        myTree.insert("Cn1", 15);      
+        myTree.insert("Cn2", 16);   
+        myTree.insert("Cn3", 18);
+        myTree.insert("Cn4", 16);
+        myTree.insert("Dn1", 13);
+        myTree.insert("En", 17);
+//        System.out.println("Trasever : ");
+//        myTree.preOrder();
 //        System.out.println("");
 //        System.out.println("Summ of age : ");
 //        System.out.println(myTree.sum());
 //        System.out.println("Avg of age : ");
 //        System.out.println(myTree.avg());
-//        myTree.ghiFile();
+////        myTree.ghiFile();
 //        System.out.println("Height : ");
 //        System.out.println(myTree.height());
 //        System.out.println("Total node : "+ myTree.count());
 //        myTree.deleteByCopy();
+//        System.out.println("");
+        System.out.println("Trasever : ");
+//        myTree.preOrder();   
+//        System.out.println("");
+
+        myTree.breadth2(myTree.root);
+        System.out.println("");
+        System.out.println("B7 : ");
+        myTree.rotateRight(myTree.root);
+        myTree.breadth2(myTree.root);
 //        System.out.println("Trasever : ");
-//       myTree.preOrder();   
-//       
+//        myTree.preOrder();
+        System.out.println("B8");
+//        System.out.println("=====================");
+//        System.out.println("Trasever : ");
+         myTree.Rotate3(myTree.root);
+        Node x =myTree.Node3thHaveRightSon();
+        myTree.rotateLeft(x);
+        myTree.breadth2(myTree.root);
+//        myTree.preOrder();
     }
-  
 }
-    
